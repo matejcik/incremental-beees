@@ -1,7 +1,7 @@
 import React from 'react'
 import njsx from 'njsx'
 import { StyleSheet, Text, View, Button, Image } from 'njsx-react-native'
-import BeeFlight from './BeeFlight';
+import BeeFlight from './BeeFlight'
 
 const STARTING_SPEED = 10
 const STARTING_CAPACITY = 10
@@ -48,7 +48,7 @@ class jsPropertyLine extends React.Component {
 }
 const PropertyLine = njsx(jsPropertyLine)
 
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props)
 
@@ -72,14 +72,14 @@ export default class App extends React.Component {
   }
 
   addNectar(howMuch) {
-    this.setState(state => { return {
+    this.setState(state => ({
       nectar: state.nectar + howMuch, 
       totalCollected: state.totalCollected + howMuch
-    }})
+    }))
   }
 
   collectNectar() {
-    this.setState(state => { return { isCollecting: true }})
+    this.setState(state => ({ isCollecting: true }))
     let collected = 0
     let speed = this.state.speed.value
     let postsRemaining = speed
@@ -89,7 +89,7 @@ export default class App extends React.Component {
     let collectOnePost = () => {
       collected += randInt(this.state.postCapacity.min, this.state.postCapacity.max)
       collected = Math.min(collected, capacity)
-      this.setState(state => { return { carrying: collected } })
+      this.setState(state => ({ carrying: collected }))
       postsRemaining--
 
       if (postsRemaining && collected < capacity) setTimeout(collectOnePost, onePostTime)
@@ -102,7 +102,7 @@ export default class App extends React.Component {
       }
     }
 
-    this.setState(state => { isCollecting: true })
+    this.setState(state => ({ isCollecting: true }))
     setTimeout(collectOnePost, onePostTime)
   }
 
@@ -120,14 +120,14 @@ export default class App extends React.Component {
 
   upgradeField()
   {
-    this.setState(state => { return {
+    this.setState(state => ({
       postCapacity: {
         min: 10,
         max: 50
       },
       speed: new BeeProperty("speed", "Collecting speed", STARTING_SPEED, 10)
 
-    }})
+    }))
   }
 
   render() {
@@ -169,6 +169,8 @@ export default class App extends React.Component {
   }
 }
 
+
+export default njsx(App)
 
 
 const styles = StyleSheet.create({

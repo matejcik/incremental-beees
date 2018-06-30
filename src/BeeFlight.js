@@ -12,8 +12,8 @@ class BeeFlight extends React.Component {
     }
 
     onLayout(e) {
-        let { x, y, width, height } = e.nativeEvent.layout
-        this.setState(state => { return { width }})
+        let { width } = e.nativeEvent.layout
+        this.setState(state => ({ width }))
     }
 
     render() {
@@ -21,12 +21,12 @@ class BeeFlight extends React.Component {
         let topRow = false
         if (this.props.flying && this.state.width) {
             topRow = this.state.currentPost <= this.props.posts
-            currentRowPost = topRow ? this.state.currentPost : this.state.currentPost - this.props.posts
+            let currentRowPost = topRow ? this.state.currentPost : this.state.currentPost - this.props.posts
             let w = this.state.width
             beeOffset = (w / (this.props.posts + 1)) * currentRowPost
 
             setTimeout(
-                () => this.setState(state => { return { currentPost: (state.currentPost + 1) % (this.props.posts * 2) } }),
+                () => this.setState(state => ({ currentPost: (state.currentPost + 1) % (this.props.posts * 2) })),
                 500,
             )
         } else {
@@ -34,7 +34,7 @@ class BeeFlight extends React.Component {
         }
 
         let bee = Image({
-            source: require("./bee.jpg"),
+            source: require("./assets/bee.jpg"),
             style: { height: 50, width: 50, },
             resizeMode: "contain",
         })
