@@ -32,9 +32,9 @@ class jsPropertyLine extends React.Component {
   render() {
     let p = this.props.property
     return View(
-      styles.propertyLine,
+      { style: { flex: 1 } },
       Text(styles.header, p.label),
-      View({ style: { flexDirection: "row" } },
+      View(styles.propertyLine,
         Text(`Current: ${p.value}`),
         Text(`Upgrade cost: ${p.upgradeCost}`),
         Button({
@@ -169,15 +169,14 @@ class App extends React.Component {
   }
 }
 
-
-export default njsx(App)
+export default App
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
   header: {
@@ -185,5 +184,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   propertyLine: {
-  }
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
 });
