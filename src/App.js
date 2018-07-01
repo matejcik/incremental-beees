@@ -2,6 +2,7 @@ import React from 'react'
 import njsx from 'njsx'
 import { StyleSheet, Text, View, Button, Image } from 'njsx-react-native'
 import BeeFlight from './BeeFlight'
+import HexButton from './HexButton'
 
 const STARTING_SPEED = 10
 const STARTING_CAPACITY = 10
@@ -41,7 +42,8 @@ class jsPropertyLine extends React.Component {
           title: "+",
           onPress: () => this.props.onBuy(p),
           disabled: !this.canBuy(),
-        })
+        }),
+        HexButton({}),
       )
     )()
   }
