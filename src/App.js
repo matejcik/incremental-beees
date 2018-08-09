@@ -43,7 +43,7 @@ class jsPropertyLine extends React.Component {
           onPress: () => this.props.onBuy(p),
           disabled: !this.canBuy(),
         }),
-        HexButton({}),
+        HexButton({ title: "Buy", disabled: true }),
       )
     )()
   }
@@ -139,7 +139,7 @@ class App extends React.Component {
         posts: this.state.speed.value,
       }),
       Text(`Bee is carrying ${this.state.carrying} nectar.`),
-      Button({
+      HexButton({
         title: "Collect nectar",
         disabled: this.state.isCollecting,
         onPress: ()=>this.collectNectar(),
