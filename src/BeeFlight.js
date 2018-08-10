@@ -1,6 +1,9 @@
 import React from 'react'
 import njsx from 'njsx'
+import { Animated } from 'react-native'
 import { StyleSheet, View, Image } from 'njsx-react-native'
+
+const nAnimatedImage = njsx(Animated.Image)
 
 class BeeFlight extends React.Component {
     constructor(props) {
@@ -9,6 +12,26 @@ class BeeFlight extends React.Component {
             currentPost: 0,
             width: 0,
         }
+        this.flightState = new Animated.Value(0)
+    }
+
+    startFlight() {
+        Animated.sequence([
+            Animated.timing(
+                this.flightState,
+                {
+                    toValue: 1,
+                    duration: 1000,
+                }
+            ),
+            Animated.timing(
+                this.flightState,
+                {
+                    toValue: 0,
+                    duration: 1000,
+                }
+            ),
+        ]).start()
     }
 
     onLayout(e) {
@@ -16,26 +39,25 @@ class BeeFlight extends React.Component {
         this.setState(state => ({ width }))
     }
 
-    render() {
-        let beeOffset = 1
-        let topRow = false
-        if (this.props.flying && this.state.width) {
-            topRow = this.state.currentPost <= this.props.posts
-            let currentRowPost = topRow ? this.state.currentPost : this.state.currentPost - this.props.posts
-            let w = this.state.width
-            beeOffset = (w / (this.props.posts + 1)) * currentRowPost
-
-            setTimeout(
-                () => this.setState(state => ({ currentPost: (state.currentPost + 1) % (this.props.posts * 2) })),
-                500,
-            )
-        } else {
-            beeOffset = 0
+    componentDidUpdate(prevProps) {
+        if (this.props.flying && !prevProps.flying) {
+            this.startFlight()
         }
+    }
 
-        let bee = Image({
+    render() {
+        const beeHeight = this.flightState.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 50],
+        })
+        let bee = nAnimatedImage({
             source: require("./assets/bee.jpg"),
-            style: { height: 50, width: 50, },
+            style: {
+                position: "absolute",
+                height: 50,
+                width: 50,
+                top: beeHeight,
+            },
             resizeMode: "contain",
         })
 
@@ -48,22 +70,9 @@ class BeeFlight extends React.Component {
                 },
                 onLayout: (e) => this.onLayout(e),
             },
-            View(
-                { style: { ...beeLine, paddingLeft: beeOffset, backgroundColor: "#f00" }},
-                this.state.topRow && bee,
-            ),
-            View(
-                { style: { ...beeLine, paddingLeft: beeOffset, backgroundColor: "#0f0" }},
-                !this.state.topRow && bee,
-            ),
+            bee,
         )()
     }
 }
 
 export default njsx(BeeFlight)
-
-const beeLine = {
-    flex: 1,
-    //flexDirection: "row",
-    justifyContent: "flex-start",
-}
