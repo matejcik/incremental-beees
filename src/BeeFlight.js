@@ -51,7 +51,7 @@ class BeeFlight extends React.Component {
             outputRange: [0, 50],
         })
         let bee = nAnimatedImage({
-            source: require("./assets/bee.jpg"),
+            source: require("./assets/bee.png"),
             style: {
                 position: "absolute",
                 height: 50,
@@ -63,7 +63,8 @@ class BeeFlight extends React.Component {
 
         return View(
             {
-                style: { ...this.props.style,
+                style: {
+                    ...this.props.style,
                     height: 100,
                     flexDirection: "column",
                     alignItems: "stretch",

@@ -1,8 +1,11 @@
 import React from 'react'
 import njsx from 'njsx'
+import { ImageBackground } from 'react-native'
 import { StyleSheet, Text, View, Button, Image } from 'njsx-react-native'
 import BeeFlight from './BeeFlight'
 import HexButton from './HexButton'
+
+const nImageBackground = njsx(ImageBackground)
 
 const STARTING_SPEED = 10
 const STARTING_CAPACITY = 10
@@ -97,10 +100,10 @@ class App extends React.Component {
             if (postsRemaining && collected < capacity) setTimeout(collectOnePost, onePostTime)
             else {
                 this.addNectar(collected)
-                this.setState(state => { return {
+                this.setState(state => ({
                     isCollecting: false,
                     carrying: 0,
-                }})
+                }))
             }
         }
 
@@ -115,8 +118,7 @@ class App extends React.Component {
         }
     }
 
-    upgradeField()
-    {
+    upgradeField() {
         this.setState(state => ({
             postCapacity: {
                 min: 10,
@@ -129,39 +131,47 @@ class App extends React.Component {
 
     render() {
         return View(styles.container,
-            BeeFlight({
-                flying: this.state.isCollecting,
-                posts: this.state.speed.value,
-            }),
-            Text(`Bee is carrying ${this.state.carrying} nectar.`),
-            HexButton({
-                title: "Collect nectar",
-                disabled: this.state.isCollecting,
-                onPress: ()=>this.collectNectar(),
-            }),
-            Text(`Nectar: ${this.state.nectar}`),
-            Text(`Collecting: ${this.state.isCollecting}`),
-
-            PropertyLine({
-                property: this.state.speed,
-                nectar: this.state.nectar,
-                onBuy: () => this.onBuy(this.state.speed),
-            }),
-
-            PropertyLine({
-                property: this.state.capacity,
-                nectar: this.state.nectar,
-                onBuy: () => this.onBuy(this.state.capacity),
-            }),
-
-            this.state.totalCollected >= 200 && [
-                Button({
-                    title: "To greener pastures! (200)",
-                    onPress: () => null,
-                    disabled: true,
+            nImageBackground(
+                styles.flowerbed,
+                {
+                    source: require("./assets/flowers.png"),
+                    resizeMode: "repeat",
+                },
+                BeeFlight({
+                    style: { backgroundColor: "transparent", },
+                    flying: this.state.isCollecting,
+                    posts: this.state.speed.value,
                 }),
-                Button({ title: "Auto-Collect (1000)", onPress: () => null }),
-            ]
+                Text(`Bee is carrying ${this.state.carrying} nectar.`),
+                HexButton({
+                    title: "Collect nectar",
+                    disabled: this.state.isCollecting,
+                    onPress: () => this.collectNectar(),
+                }),
+                Text(`Nectar: ${this.state.nectar}`),
+                Text(`Collecting: ${this.state.isCollecting}`),
+
+                PropertyLine({
+                    property: this.state.speed,
+                    nectar: this.state.nectar,
+                    onBuy: () => this.onBuy(this.state.speed),
+                }),
+
+                PropertyLine({
+                    property: this.state.capacity,
+                    nectar: this.state.nectar,
+                    onBuy: () => this.onBuy(this.state.capacity),
+                }),
+
+                this.state.totalCollected >= 200 && [
+                    Button({
+                        title: "To greener pastures! (200)",
+                        onPress: () => null,
+                        disabled: true,
+                    }),
+                    Button({ title: "Auto-Collect (1000)", onPress: () => null }),
+                ]
+            ),
         )()
     }
 }
@@ -175,6 +185,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'stretch',
         justifyContent: 'center',
+    },
+    flowerbed: {
+        flex: 1,
     },
     header: {
         fontWeight: "bold",

@@ -1,3 +1,21 @@
+
+const initialValues = {
+    nectarCollected: 0,
+    nectarSpent: 0,
+
+    field: {
+        level: 0,
+        min: 0,
+        max: 5,
+    },
+
+    speedLevel: 0,
+    capacityLevel: 0,
+    enduranceLevel: 0,
+}
+
+
+
 const Feature = {
     level: 1,
     visibleSince: 0,
